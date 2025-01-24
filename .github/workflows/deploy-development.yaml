@@ -11,11 +11,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Install Parcel
-        run: npm install --global parcel-bundler
+      - name: Install Dependencies
+        run: npm install parcel-bundler
 
       - name: Build Website
-        run: parcel build src/index.html
+        run: npx parcel build src/index.html
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
