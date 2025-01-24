@@ -1,40 +1,30 @@
-name: Deploy to Development Environment
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - develop
+    branches: [develop]
 
 jobs:
   build:
-    name: Build the Static Website
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+      - name: Install Parcel
+        run: npm install --global parcel-bundler
 
-      - name: Install dependencies
-        run: npm install
+      - name: Build Website
+        run: parcel build src/index.html
 
-      - name: Build the project
-        run: npx parcel build src/index.html --dist-dir dist
-
-      - name: Upload artifact
+      - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist # Directory where the built files are located
+          path: ./dist
 
   deploy:
-    name: Deploy to GitHub Pages
-    needs: build
     runs-on: ubuntu-latest
-
+    needs: build
     steps:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
